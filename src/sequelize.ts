@@ -19,7 +19,7 @@ const initDB = async () => {
         await Type.create({
             name: types[i]?.name,
         });
-    }
+    };
     for (let i = 0; i < pokemons.length; i++) {
         await Pokemon.create({
             name: pokemons[i]?.name,
@@ -29,21 +29,6 @@ const initDB = async () => {
             types: pokemons[i]?.types,
             created: pokemons[i]?.created
         });
-    }
-    // types.forEach(async (type: Type) => {
-    //     await Type.create({
-    //         name: type?.name,
-    //     });
-    // });
-    // pokemons.forEach(async (pokemon: Pokemon) => {
-    //     await Pokemon.create({
-    //         name: pokemon?.name,
-    //         hp: pokemon?.hp,
-    //         cp: pokemon?.cp,
-    //         picture: pokemon?.picture,
-    //         types: pokemon?.types,
-    //         created: pokemon?.created
-    //     });
-    // });
+    };
 };
 export default initDB
