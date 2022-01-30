@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
-// import morgan from 'morgan';
+import morgan from 'morgan';
+import cors from 'cors';
 import favicon from 'serve-favicon';
 import compression from 'compression';
 import initDB from "./src/sequelize";
@@ -10,7 +11,6 @@ import { updatePokemon } from './src/routes/updatePokemon';
 import { deletePokemon } from './src/routes/deletePokemon';
 import { findAllPokemons } from './src/routes/findAllPokemons';
 import { findPokemonByPK } from './src/routes/findPokemonByPK';
-import morgan from 'morgan';
 
 const app: Application = express();
 const port: string | number = process.env.PORT || 3000;
@@ -25,19 +25,19 @@ app
     .use(compression())
     //GET JSON PARAMS
     .use(express.urlencoded({ extended: true }))
-    .use(express.json());
+    .use(express.json())
+    .use(cors());
 
 //SYNCHRO DB
 initDB();
 
 //PUBLIC ROUTE
 app.use('/api/login', login);
-
 //PRIVATE app
 app.use('/api/pokemons/create', auth, createPokemon);
 app.use('/api/pokemons/update', auth, updatePokemon);
 app.use('/api/pokemons/delete', auth, deletePokemon);
-app.use("/api/pokemons", auth, findAllPokemons);
+app.use("/api/pokemons/", auth, findAllPokemons);
 app.use("/api/pokemon", auth, findPokemonByPK);
 
 //ERROR URL INVALD
