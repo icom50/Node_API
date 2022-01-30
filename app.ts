@@ -1,5 +1,5 @@
 import express, { Application } from 'express';
-import morgan from 'morgan';
+// import morgan from 'morgan';
 import favicon from 'serve-favicon';
 import compression from 'compression';
 import initDB from "./src/sequelize";
@@ -10,16 +10,17 @@ import { updatePokemon } from './src/routes/updatePokemon';
 import { deletePokemon } from './src/routes/deletePokemon';
 import { findAllPokemons } from './src/routes/findAllPokemons';
 import { findPokemonByPK } from './src/routes/findPokemonByPK';
+import { helloHeroku } from './src/routes/helloHeroku';
 
 const app: Application = express();
-const port: number = 3000;
+const port: string | number = process.env.PORT || 3000;
 
 //MIDDLEWARES
 app
     //FAV ICON
     .use(favicon(__dirname + '/src/assets/favicon.ico'))
     //LOG
-    .use(morgan('dev'))
+    // .use(morgan('dev'))
     //COMPRESSION JSON
     .use(compression())
     //GET JSON PARAMS
@@ -29,14 +30,16 @@ app
 //SYNCHRO DB
 initDB();
 
-//PUBLIC ROUTE
-app.use('/api/login', login);
+
 //PRIVATE app
 app.use('/api/pokemons/create', auth, createPokemon);
 app.use('/api/pokemons/update', auth, updatePokemon);
 app.use('/api/pokemons/delete', auth, deletePokemon);
 app.use("/api/pokemons", auth, findAllPokemons);
 app.use("/api/pokemon", auth, findPokemonByPK);
+//PUBLIC ROUTE
+app.use('/', helloHeroku);
+app.use('/api/login', login);
 
 //ERROR URL INVALD
 app.use(({ res }) => {
