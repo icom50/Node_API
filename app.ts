@@ -10,6 +10,7 @@ import { updatePokemon } from './src/routes/updatePokemon';
 import { deletePokemon } from './src/routes/deletePokemon';
 import { findAllPokemons } from './src/routes/findAllPokemons';
 import { findPokemonByPK } from './src/routes/findPokemonByPK';
+import morgan from 'morgan';
 
 const app: Application = express();
 const port: string | number = process.env.PORT || 3000;
@@ -19,7 +20,7 @@ app
     //FAV ICON
     .use(favicon(__dirname + '/src/assets/favicon.ico'))
     //LOG
-    // .use(morgan('dev'))
+    .use(morgan('dev'))
     //COMPRESSION JSON
     .use(compression())
     //GET JSON PARAMS
