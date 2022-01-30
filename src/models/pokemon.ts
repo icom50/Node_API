@@ -10,7 +10,7 @@ class Pokemon extends Model {
     public picture!: string;
     public types!: string[] | string;
     public readonly created!: Date;
-}
+};
 //DATATYPE + VALIDATORS
 Pokemon.init({
     id: {
@@ -68,7 +68,7 @@ Pokemon.init({
                 const types: Type[] = await Type.findAll();
                 value.split(',').forEach((type: string) => {
                     if (!types.some((typeDB: Type) => typeDB?.name === type)) throw new Error('The type is invalid');
-                })
+                });
             }
         },
         get() {
