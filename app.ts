@@ -3,8 +3,13 @@ import morgan from 'morgan';
 import favicon from 'serve-favicon';
 import compression from 'compression';
 import initDB from "./src/sequelize";
-import { routes } from './src/routes';
+import { login } from './src/routes/login';
+import auth from './src/auth/auth';
+import { createPokemon } from './src/routes/createPokemon';
+import { updatePokemon } from './src/routes/updatePokemon';
+import { deletePokemon } from './src/routes/deletePokemon';
 import { findAllPokemons } from './src/routes/findAllPokemons';
+import { findPokemonByPK } from './src/routes/findPokemonByPK';
 
 const app: Application = express();
 const port: number = 3000;
@@ -24,14 +29,14 @@ app
 //SYNCHRO DB
 initDB();
 
-// findAllPokemons(app);
-
-try {
-    app.use('', routes);
-
-} catch (e) {
-    console.log("Error on Express Node > ", e);
-}
+//PUBLIC ROUTE
+app.use('/api/login', login);
+//PRIVATE app
+app.use('/api/pokemons/create', auth, createPokemon);
+app.use('/api/pokemons/update', auth, updatePokemon);
+app.use('/api/pokemons/delete', auth, deletePokemon);
+app.use("/api/pokemons", auth, findAllPokemons);
+app.use("/api/pokemon", auth, findPokemonByPK);
 
 //ERROR URL INVALD
 app.use(({ res }) => {
